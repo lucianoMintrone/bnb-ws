@@ -36,4 +36,14 @@ docker-compose up
 docker-compose run web rails c
 ```
 
+## Deploy
+
+```sh
+heroku login
+heroku container:login
+heroku container:push web
+heroku container:release web
+heroku run rake db:migrate
+```
+
 [4]:https://gitlab.com/bookbnb/book-bnb-ws
