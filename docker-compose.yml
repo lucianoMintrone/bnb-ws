@@ -2,6 +2,7 @@ version: '3'
 services:
   db:
     image: postgres:latest
+    command: postgres -c listen_addresses='*'
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:

@@ -1,3 +1,5 @@
 class ApplicationRecord < ActiveRecord::Base
-  self.abstract_class = true
+	include Serializable
+
+	self.abstract_class = true
 end
