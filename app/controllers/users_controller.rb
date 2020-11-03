@@ -11,9 +11,4 @@ class UsersController < ApplicationController
 		end
 		render_object current_user
 	end
-
-	private
-	def current_user
-		@current_user ||= params[:id] == 'me' ? User.first : User.find(params[:id])
-	end
 end
