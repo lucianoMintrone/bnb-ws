@@ -7,5 +7,9 @@ Rails.application.routes.draw do
 
 	resources :room_types
 
-	resources :users
+	resources :users do
+		collection do
+			post 'auth' => 'users#auth'
+		end
+	end
 end
