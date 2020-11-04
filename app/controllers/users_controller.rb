@@ -1,30 +1,25 @@
 class UsersController < ApplicationController
+	skip_before_action :authorize_user, only: [:auth]
+
 	def auth
-		firebase_id = token[:firebase_id]
-		email = token[:email]
-		user = User.find_or_create_by(firebase_id: firebase_id) do |user|
-			user.email = email
+		firebase_user = FirebaseUser.new(token: params[:token])
+		find_user = User.find_or_create_by(firebase_id: firebase_user.id) do |user|
+			user.email = firebase_user.email
 			user.save!
 		end
-		render_object user
+		render_object find_user
 	end
 
 	def show
-		render_object current_user
+		render_object user
 	end
 
 	def update
-		current_user.update! params.permit(:email, :first_name, :last_name)
+		user.update! params.permit(:email, :first_name, :last_name)
 		if params[:image].present?
-			current_user.image.purge
-			current_user.image.attach(params[:image])
+			user.image.purge
+			user.image.attach(params[:image])
 		end
-		render_object current_user
-	end
-
-	private
-	def token
-		hmac_secret = 'top-secret-phrase'
-		JWT.decode(params[:token], hmac_secret, true, { algorithm: 'HS256' }).first.symbolize_keys!
+		render_object user
 	end
 end
