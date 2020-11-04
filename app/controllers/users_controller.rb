@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 		find_user = User.find_or_create_by(firebase_id: firebase_user.id) do |user|
 			user.email = firebase_user.email
 			user.save!
+			Host.create! user: user
 		end
 		render_object find_user
 	end
