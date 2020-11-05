@@ -8,6 +8,10 @@ class RoomsController < ApplicationController
 	end
 
 	def index
+		render_collection Room.all
+	end
+
+	def index_for_host
 		render_collection current_host.rooms
 	end
 
