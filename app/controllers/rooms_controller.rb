@@ -7,6 +7,10 @@ class RoomsController < ApplicationController
 		render_object room
 	end
 
+	def index
+		render_collection current_host.rooms
+	end
+
 	private
 	def create_params
 		params.permit(:name, :description, :number_of_guests, :price_per_night, :longitude, 

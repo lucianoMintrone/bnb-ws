@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 	get 'health' => 'health#show'
 
 	resources :hosts, only: [] do
-		resources :rooms, only: [:create]
+		resources :rooms, only: [:create, :index]
 	end
 
 	resources :room_types
