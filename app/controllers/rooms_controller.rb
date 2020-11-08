@@ -8,12 +8,17 @@ class RoomsController < ApplicationController
 	end
 
 	def index
+		query = Room.all
 		if params[:radius] && params[:current_latitude] && params[:current_longitude]
-			rooms = Room.within(params[:radius], :origin => [params[:current_latitude], params[:current_longitude]])
-		else 
-			rooms = Room.all
+			query = query.within(params[:radius], :origin => [params[:current_latitude], params[:current_longitude]])
 		end
-		render_collection rooms
+		if params[:room_type_id]
+			query = query.where(room_type_id: params[:room_type_id])
+		end
+		if params[:number_of_guests]
+			query = query.where(number_of_guests: params[:number_of_guests])
+		end
+		render_collection query
 	end
 
 	def index_for_host
