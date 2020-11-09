@@ -8,17 +8,7 @@ class RoomsController < ApplicationController
 	end
 
 	def index
-		query = Room.all
-		if params[:radius] && params[:current_latitude] && params[:current_longitude]
-			query = query.within(params[:radius], :origin => [params[:current_latitude], params[:current_longitude]])
-		end
-		if params[:room_type_id]
-			query = query.where(room_type_id: params[:room_type_id])
-		end
-		if params[:number_of_guests]
-			query = query.where(number_of_guests: params[:number_of_guests])
-		end
-		render_collection query
+		render_collection GetModels.new(repository: RoomRepository.new, filter_by: filter_by).execute
 	end
 
 	def index_for_host
@@ -44,5 +34,9 @@ class RoomsController < ApplicationController
 		params.permit(:name, :description, :number_of_guests, :price_per_night, :longitude, 
 			:latitude, :room_type_id
 		)
+	end
+
+	def filter_by
+		params[:filter_by]&.to_unsafe_h&.deep_symbolize_keys
 	end
 end
