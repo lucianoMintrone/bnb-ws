@@ -18,7 +18,7 @@ class FirebaseUser
 	rescue JWT::VerificationError
 		raise BookbnbError.new 'jwt_token_error', 'Invalid token signature'
 	rescue JWT::ExpiredSignature
-		raise BookbnbError.new 'jwt_token_error', 'Token has expired'
+		raise BookbnbUnauthorizedError.new error_message: 'Token has expired'
 	end
 
 	def hmac_secret

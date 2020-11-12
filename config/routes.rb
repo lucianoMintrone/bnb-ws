@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 	resources :hosts, only: [] do
 		resources :rooms, only: [:create]
 	end
+	get 'hosts/:host_id/rooms' => 'rooms#index_for_host'
+
+	resources :rooms, only: [:index, :update]
 
 	resources :room_types
 
