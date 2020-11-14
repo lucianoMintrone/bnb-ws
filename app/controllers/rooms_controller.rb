@@ -32,7 +32,7 @@ class RoomsController < ApplicationController
 
 	def update_params
 		params.permit(:name, :description, :number_of_guests, :price_per_night, :longitude, 
-			:latitude, :room_type_id
+			:latitude, :room_type_id, :available_from, :available_to
 		)
 	end
 

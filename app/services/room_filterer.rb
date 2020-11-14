@@ -27,23 +27,6 @@ class RoomFilterer
 		raise BookbnbError.new 'invalid_filter', 'Invalid filter'
 	end
 
-	# def filtering_query_for(filter_option, filter_value)
-	# 	case filter_option
-	# 	when :room_type_id
-	# 		FilterByAttributeQuery.new :id, filter_value
-	# 	# when :status
-	# 	# 	FilterByOperationStatusQuery.new filter_value
-	# 	# when :created_at
-	# 	# 	FilterByDateRangeQuery.new :operations, :created_at, filter_value
-	# 	# when :loanee_cuit
-	# 	# 	FilterByLoaneeCuitQuery.new filter_value
-	# 	# when :loanee_name
-	# 	# 	FilterByLoaneeNameQuery.new filter_value
-	# 	else
-	# 		invalid_filter_option! filter_option
-	# 	end
-	# end
-
 	def invalid_filter_option!(filter_option)
 		raise BookbnbError.new 'invalid_filter_by', "Invalid filter option: #{filter_option}"
 	end
