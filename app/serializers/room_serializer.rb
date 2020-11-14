@@ -1,5 +1,6 @@
 class RoomSerializer < ActiveModel::Serializer
-	attributes :id, :name, :description, :number_of_guests, :price_per_night, :longitude, :latitude
+	attributes :id, :name, :description, :number_of_guests, :price_per_night, :longitude, :latitude,
+		:available_from, :available_to
 
 	belongs_to :host
 	belongs_to :room_type
