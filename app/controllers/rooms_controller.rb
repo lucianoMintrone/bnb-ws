@@ -7,6 +7,12 @@ class RoomsController < ApplicationController
 		render_object room
 	end
 
+	def destroy
+		room = Room.find(params[:id])
+		room.destroy!
+		render_object room
+	end
+
 	def index
 		render_collection GetModels.new(repository: RoomRepository.new, filter_by: filter_by).execute
 	end
