@@ -1,3 +1,5 @@
+require 'rest-client'
+
 class UsersController < ApplicationController
 	skip_before_action :authorize_user, only: [:auth]
 
@@ -8,6 +10,7 @@ class UsersController < ApplicationController
 			user.save!
 			Host.create! user: user
 			Guest.create! user: user
+			create_wallet_for_user user
 		end
 		render_object find_user
 	end
@@ -23,5 +26,12 @@ class UsersController < ApplicationController
 			user.image.attach(params[:image])
 		end
 		render_object user
+	end
+
+	private
+	def create_wallet_for_user(user)
+		response = RestClient.post('https://calm-oasis-56692.herokuapp.com/identity', {}.to_json, {content_type: :json, accept: :json})
+		wallet = JSON.parse response
+		Wallet.create! user: user, external_id: wallet["id"], address: wallet["address"], mnemonic: wallet["mnemonic"]
 	end
 end

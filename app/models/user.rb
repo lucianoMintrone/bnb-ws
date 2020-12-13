@@ -15,6 +15,7 @@ class User < ApplicationRecord
 
 	has_one :guest
 	has_one :host
+	has_one :wallet
 
 	has_one_attached :image
 
