@@ -1,4 +1,4 @@
-class RoomsController < ApplicationController
+class RoomsController < ApiController
 	def create
 		room = Room.create! create_params
 		update_image_for_room(room)

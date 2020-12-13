@@ -1,7 +1,7 @@
 require 'rest-client'
 
-class UsersController < ApplicationController
-	skip_before_action :authorize_user, only: [:auth]
+class UsersController < ApiController
+	skip_before_action :authorize_user, :validate_user, only: [:auth]
 
 	def auth
 		firebase_user = FirebaseUser.new(token: params[:token])
@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 			Guest.create! user: user
 			create_wallet_for_user user
 		end
+		check_if_user_is_blocked find_user
 		render_object find_user
 	end
 

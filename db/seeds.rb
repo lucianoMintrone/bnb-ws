@@ -22,3 +22,5 @@ RoomType.find_or_create_by(name: :shared_room) do |room_type|
 	room_type.displayed_name = 'Habitación compartida'
 	room_type.save!
 end
+
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
