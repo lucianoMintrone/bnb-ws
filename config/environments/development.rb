@@ -29,7 +29,7 @@ Rails.application.configure do
 
 	# Store uploaded files on the local file system (see config/storage.yml for options)
 	config.active_storage.service = :local
-	Rails.application.routes.default_url_options[:host] = 'https://intense-springs-34933.herokuapp.com'
+	Rails.application.routes.default_url_options[:host] = 'https://intense-springs-34933.herokuapp.com' #'http://localhost:3000' #'https://intense-springs-34933.herokuapp.com'
 
 	# Don't care if the mailer can't send.
 	config.action_mailer.raise_delivery_errors = false

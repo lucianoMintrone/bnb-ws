@@ -23,7 +23,7 @@ class Room < ApplicationRecord
 	belongs_to :host
 	belongs_to :room_type
 
-	has_one_attached :image
+	has_many_attached :images
 
 	acts_as_mappable :default_units => :kms,
 		:default_formula => :sphere,
@@ -32,7 +32,7 @@ class Room < ApplicationRecord
 		:lng_column_name => :longitude
 
 	def image_url
-		return nil unless image.attached?
-		url_for image
+		return nil unless images.first
+		url_for images.first
 	end
 end
