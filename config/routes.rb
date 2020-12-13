@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
 	resources :rooms, only: [:index, :update, :destroy] do
 		resources :bookings, only: [:create]
+		resources :comments, only: [:create]
 	end
 
 	resources :room_types

@@ -7,8 +7,10 @@ class RoomSerializer < ActiveModel::Serializer
 	belongs_to :host
 	belongs_to :room_type
 
-	has_one :image_url
+	has_many :comments
 	has_many :images
+
+	has_one :image_url
 
 	def images
 		object.images.map { |image| url_for image }
