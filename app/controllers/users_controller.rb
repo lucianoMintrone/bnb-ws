@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 			user.email = firebase_user.email
 			user.save!
 			Host.create! user: user
+			Guest.create! user: user
 		end
 		render_object find_user
 	end
