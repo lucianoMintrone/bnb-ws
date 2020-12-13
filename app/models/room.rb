@@ -13,6 +13,8 @@
 #  latitude         :decimal(10, 6)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  available_from   :date
+#  available_to     :date
 #
 class Room < ApplicationRecord
 	include Rails.application.routes.url_helpers

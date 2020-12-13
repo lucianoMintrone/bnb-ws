@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_13_174645) do
+ActiveRecord::Schema.define(version: 2020_12_13_175905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,19 @@ ActiveRecord::Schema.define(version: 2020_12_13_174645) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "room_id", null: false
+    t.bigint "guest_id", null: false
+    t.date "from_date"
+    t.date "to_date"
+    t.float "price_per_night"
+    t.string "status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_bookings_on_guest_id"
+    t.index ["room_id"], name: "index_bookings_on_room_id"
   end
 
   create_table "guests", force: :cascade do |t|
@@ -85,6 +98,8 @@ ActiveRecord::Schema.define(version: 2020_12_13_174645) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookings", "guests"
+  add_foreign_key "bookings", "rooms"
   add_foreign_key "guests", "users"
   add_foreign_key "hosts", "users"
   add_foreign_key "rooms", "hosts"

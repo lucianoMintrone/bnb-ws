@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
 		@current_host ||= host_id == 'me' ? user.host : Host.find(host_id)
 	end
 
+	def current_guest
+		@current_guest ||= user.guest
+	end
+
 	def host_id
 		params[:id] || params[:host_id]
 	end
