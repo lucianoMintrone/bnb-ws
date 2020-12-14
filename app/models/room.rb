@@ -13,15 +13,20 @@
 #  latitude         :decimal(10, 6)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  available_from   :date
+#  available_to     :date
 #
 class Room < ApplicationRecord
 	include Rails.application.routes.url_helpers
+	include Blockable
 
 	validates :host, :name, :room_type, presence: true
 	belongs_to :host
 	belongs_to :room_type
 
-	has_one_attached :image
+	has_many :comments
+
+	has_many_attached :images
 
 	acts_as_mappable :default_units => :kms,
 		:default_formula => :sphere,
@@ -29,8 +34,20 @@ class Room < ApplicationRecord
 		:lat_column_name => :latitude,
 		:lng_column_name => :longitude
 
+	# def block!
+	# 	update! blocked_at: DateTime.current
+	# end
+
+	# def is_blocked?
+	# 	blocked_at.present?
+	# end
+
 	def image_url
-		return nil unless image.attached?
-		url_for image
+		return nil unless images.first
+		url_for images.first
 	end
+
+	# def unblock!
+	# 	update! blocked_at: nil
+	# end
 end

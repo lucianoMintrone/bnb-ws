@@ -1,5 +1,7 @@
-class UsersController < ApplicationController
-	skip_before_action :authorize_user, only: [:auth]
+require 'rest-client'
+
+class UsersController < ApiController
+	skip_before_action :authorize_user, :validate_user, only: [:auth]
 
 	def auth
 		firebase_user = FirebaseUser.new(token: params[:token])
@@ -7,7 +9,10 @@ class UsersController < ApplicationController
 			user.email = firebase_user.email
 			user.save!
 			Host.create! user: user
+			Guest.create! user: user
+			create_wallet_for_user user
 		end
+		check_if_user_is_blocked find_user
 		render_object find_user
 	end
 
@@ -22,5 +27,12 @@ class UsersController < ApplicationController
 			user.image.attach(params[:image])
 		end
 		render_object user
+	end
+
+	private
+	def create_wallet_for_user(user)
+		response = RestClient.post('https://calm-oasis-56692.herokuapp.com/identity', {}.to_json, {content_type: :json, accept: :json})
+		wallet = JSON.parse response
+		Wallet.create! user: user, external_id: wallet["id"], address: wallet["address"], mnemonic: wallet["mnemonic"]
 	end
 end

@@ -1,9 +1,7 @@
-class RoomsController < ApplicationController
+class RoomsController < ApiController
 	def create
 		room = Room.create! create_params
-		if params[:image].present?
-			room.image.attach(params[:image])
-		end
+		update_image_for_room(room)
 		render_object room
 	end
 
@@ -24,10 +22,7 @@ class RoomsController < ApplicationController
 	def update
 		room = Room.find(params[:id])
 		room.update! update_params
-		if params[:image].present?
-			user.image.purge
-			room.image.attach(params[:image])
-		end
+		update_image_for_room(room)
 		render_object room
 	end
 
@@ -40,6 +35,14 @@ class RoomsController < ApplicationController
 		params.permit(:name, :description, :number_of_guests, :price_per_night, :longitude, 
 			:latitude, :room_type_id, :available_from, :available_to
 		)
+	end
+
+	def update_image_for_room(room)
+		room.images.purge
+		return unless params[:image].present? || params[:images].present?
+		images = [params[:image]]
+		images.append params[:images]
+		images.compact.each { |image| room.images.attach(image) }
 	end
 
 	def filter_by
