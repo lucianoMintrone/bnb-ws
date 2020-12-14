@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-	actions :all, except: [:destroy]
+	actions :all, except: [:destroy, :new]
 
 	member_action :block, method: :put do
 		resource.block!

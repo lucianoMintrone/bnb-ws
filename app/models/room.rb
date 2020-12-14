@@ -18,6 +18,7 @@
 #
 class Room < ApplicationRecord
 	include Rails.application.routes.url_helpers
+	include Blockable
 
 	validates :host, :name, :room_type, presence: true
 	belongs_to :host
@@ -33,8 +34,20 @@ class Room < ApplicationRecord
 		:lat_column_name => :latitude,
 		:lng_column_name => :longitude
 
+	# def block!
+	# 	update! blocked_at: DateTime.current
+	# end
+
+	# def is_blocked?
+	# 	blocked_at.present?
+	# end
+
 	def image_url
 		return nil unless images.first
 		url_for images.first
 	end
+
+	# def unblock!
+	# 	update! blocked_at: nil
+	# end
 end

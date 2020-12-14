@@ -12,6 +12,7 @@
 #
 class User < ApplicationRecord
 	include Rails.application.routes.url_helpers
+	include Blockable
 
 	has_one :guest
 	has_one :host
@@ -19,20 +20,12 @@ class User < ApplicationRecord
 
 	has_one_attached :image
 
-	def block!
-		update! blocked_at: DateTime.current
-	end
-
-	def is_blocked?
-		blocked_at.present?
-	end
-
 	def image_url
 		return nil unless image.attached?
 		url_for image
 	end
 
-	def unblock!
-		update! blocked_at: nil
+	def name
+		"#{first_name} #{last_name}"
 	end
 end
