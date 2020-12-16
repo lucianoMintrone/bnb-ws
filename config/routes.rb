@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 	get 'health' => 'health#show'
 
+	resources :bookings, only: [] do
+		post 'mark_as_favorite' => 'bookings#mark_as_favorite'
+	end
+
 	resources :guests, only: [] do
 		get 'bookings' => 'bookings#index_for_guest'
 	end

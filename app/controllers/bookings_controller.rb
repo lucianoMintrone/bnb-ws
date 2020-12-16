@@ -13,4 +13,9 @@ class BookingsController < ApiController
 	def index_for_guest
 		render_collection Booking.where(guest_id: user.guest.id)
 	end
+
+	def mark_as_favorite
+		favorited_booking = FavoriteBooking.find_or_create_by(guest_id: user.guest.id, booking_id: params[:booking_id])
+		render_object favorited_booking
+	end
 end
