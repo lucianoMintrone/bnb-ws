@@ -3,6 +3,10 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 	get 'health' => 'health#show'
 
+	resources :guests, only: [] do
+		get 'bookings' => 'bookings#index_for_guest'
+	end
+
 	resources :hosts, only: [] do
 		resources :rooms, only: [:create]
 	end
