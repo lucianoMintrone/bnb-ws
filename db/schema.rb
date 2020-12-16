@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_14_001403) do
+ActiveRecord::Schema.define(version: 2020_12_16_011423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2020_12_14_001403) do
     t.date "available_from"
     t.date "available_to"
     t.datetime "blocked_at"
+    t.string "hash_id"
     t.index ["host_id"], name: "index_rooms_on_host_id"
     t.index ["room_type_id"], name: "index_rooms_on_room_type_id"
   end
