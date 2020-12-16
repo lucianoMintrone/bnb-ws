@@ -5,4 +5,8 @@ class BookingsController < ApiController
 		)
 		render_object booking
 	end
+
+	def index_for_room
+		render_collection Booking.where(room_id: params[:room_id])
+	end
 end

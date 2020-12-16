@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 		resources :bookings, only: [:create]
 		resources :comments, only: [:create]
 	end
+	get 'rooms/:room_id/bookings' => 'bookings#index_for_room'
 
 	resources :room_types
 
