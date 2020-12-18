@@ -1,6 +1,7 @@
 class RoomsController < ApiController
 	def create
-		room = Room.create! create_params
+		room_response = create_room_in_payments_ws
+		room = Room.create!(create_params.merge( { hash_id: room_response["hashId"] } ) )
 		update_image_for_room(room)
 		render_object room
 	end
@@ -27,6 +28,14 @@ class RoomsController < ApiController
 	end
 
 	private
+	def create_room_in_payments_ws
+		response = RestClient.post('https://calm-oasis-56692.herokuapp.com/room', 
+			{ creatorId: user.wallet.external_id, price: (params[:price_per_night].to_f / 48331.35).round(5) }.to_json, 
+			{ content_type: :json, accept: :json } 
+		)
+		JSON.parse response
+	end
+
 	def create_params
 		update_params.merge({ host: current_host })
 	end

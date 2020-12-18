@@ -3,6 +3,16 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 	get 'health' => 'health#show'
 
+	resources :bookings, only: [] do
+		post 'accept' => 'bookings#accept'
+		post 'mark_as_favorite' => 'bookings#mark_as_favorite'
+		post 'reject' => 'bookings#reject'
+	end
+
+	resources :guests, only: [] do
+		get 'bookings' => 'bookings#index_for_guest'
+	end
+
 	resources :hosts, only: [] do
 		resources :rooms, only: [:create]
 	end
@@ -12,6 +22,7 @@ Rails.application.routes.draw do
 		resources :bookings, only: [:create]
 		resources :comments, only: [:create]
 	end
+	get 'rooms/:room_id/bookings' => 'bookings#index_for_room'
 
 	resources :room_types
 
