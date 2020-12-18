@@ -14,8 +14,8 @@ class GetBookings
 	end
 
 	def filter_by
-		filter = @filter_by.merge( { guest_id: @guest.id } )
-		filter.merge!( { favorites: @guest } ) if @filter_by[:favorites].present?
+		filter = @filter_by.merge( { guest_id: @guest.id } ).except(:favorites)
+		filter.merge!( { favorites: @guest } ) if @filter_by[:favorites].present? && @filter_by[:favorites].to_b
 		filter
 	end
 
