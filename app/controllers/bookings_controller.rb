@@ -6,8 +6,12 @@ class BookingsController < ApiController
 	end
 
 	def create
-		booking = Booking.create!(guest: current_guest, room_id: params[:room_id], 
-			from_date: params[:from_date], to_date: params[:to_date], price_per_night: params[:price_per_night]
+		room = Room.find params[:room_id]
+		from_date = params[:from_date]
+		to_date = params[:to_date]
+		create_booking_in_payments_ws(room, from_date, to_date)
+		booking = Booking.create!(guest: current_guest, room: room, 
+			from_date: from_date, to_date: to_date
 		)
 		render_object booking
 	end
@@ -32,6 +36,19 @@ class BookingsController < ApiController
 	end
 
 	private
+	def create_booking_in_payments_ws(room, from_date_string, to_date_string)
+		from_date = from_date_string.to_date
+		to_date = to_date_string.to_date
+		RestClient.post('https://calm-oasis-56692.herokuapp.com/bookIntent', 
+			{ 
+				creatorId: user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
+				startMonth: from_date.month, startYear: from_date.year, endDay: to_date.day, endMonth: to_date.month,
+				endYear: to_date.year, days: ( (to_date - from_date).to_i + 1 )
+			}.to_json, 
+			{ content_type: :json, accept: :json } 
+		)
+	end
+
 	def filter_by
 		params[:filter_by]&.to_unsafe_h&.deep_symbolize_keys || {}
 	end
