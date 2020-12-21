@@ -41,4 +41,8 @@ class ApiController < ApplicationController
 	def host_id
 		params[:id] || params[:host_id]
 	end
+
+	def should_connect_to_payments_server?
+		params[:connect_to_payments_server].to_b
+	end
 end

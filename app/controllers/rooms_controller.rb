@@ -1,7 +1,11 @@
 class RoomsController < ApiController
 	def create
-		room_response = create_room_in_payments_ws
-		room = Room.create!(create_params.merge( { hash_id: room_response["hashId"] } ) )
+		room_params = create_params
+		if should_connect_to_payments_server?
+			room_response = create_room_in_payments_ws
+			room_params = room_params.merge( { hash_id: room_response["hashId"] } )
+		end
+		room = Room.create! room_params
 		update_image_for_room(room)
 		render_object room
 	end

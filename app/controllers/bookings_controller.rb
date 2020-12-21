@@ -1,6 +1,7 @@
 class BookingsController < ApiController
 	def accept
 		booking = Booking.find(params[:booking_id])
+		accept_booking_in_payments_ws(booking) if should_connect_to_payments_server?
 		booking.accepted!
 		render_object booking.reload
 	end
@@ -9,7 +10,7 @@ class BookingsController < ApiController
 		room = Room.find params[:room_id]
 		from_date = params[:from_date]
 		to_date = params[:to_date]
-		create_booking_in_payments_ws(room, from_date, to_date)
+		create_booking_in_payments_ws(room, from_date, to_date) if should_connect_to_payments_server?
 		booking = Booking.create!(guest: current_guest, room: room, 
 			from_date: from_date, to_date: to_date
 		)
@@ -31,11 +32,26 @@ class BookingsController < ApiController
 
 	def reject
 		booking = Booking.find(params[:booking_id])
+		reject_booking_in_payments_ws(booking) if should_connect_to_payments_server?
 		booking.rejected!
 		render_object booking.reload
 	end
 
 	private
+	def accept_booking_in_payments_ws(booking)
+		room = booking.room
+		from_date = booking.from_date
+		to_date = booking.to_date
+		RestClient.post('https://calm-oasis-56692.herokuapp.com/bookAccept', 
+			{ 
+				bookerId: user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
+				startMonth: from_date.month, startYear: from_date.year, endDay: to_date.day, endMonth: to_date.month,
+				endYear: to_date.year
+			}.to_json, 
+			{ content_type: :json, accept: :json } 
+		)
+	end
+	
 	def create_booking_in_payments_ws(room, from_date_string, to_date_string)
 		from_date = from_date_string.to_date
 		to_date = to_date_string.to_date
@@ -44,6 +60,20 @@ class BookingsController < ApiController
 				creatorId: user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
 				startMonth: from_date.month, startYear: from_date.year, endDay: to_date.day, endMonth: to_date.month,
 				endYear: to_date.year, days: ( (to_date - from_date).to_i + 1 )
+			}.to_json, 
+			{ content_type: :json, accept: :json } 
+		)
+	end
+
+	def reject_booking_in_payments_ws(booking)
+		room = booking.room
+		from_date = booking.from_date
+		to_date = booking.to_date
+		RestClient.post('https://calm-oasis-56692.herokuapp.com/bookReject', 
+			{ 
+				bookerId: user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
+				startMonth: from_date.month, startYear: from_date.year, endDay: to_date.day, endMonth: to_date.month,
+				endYear: to_date.year
 			}.to_json, 
 			{ content_type: :json, accept: :json } 
 		)
