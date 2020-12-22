@@ -44,7 +44,7 @@ class BookingsController < ApiController
 		to_date = booking.to_date
 		RestClient.post('https://calm-oasis-56692.herokuapp.com/bookAccept', 
 			{ 
-				bookerId: user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
+				bookerId: booking.guest.user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
 				startMonth: from_date.month, startYear: from_date.year, endDay: to_date.day, endMonth: to_date.month,
 				endYear: to_date.year
 			}.to_json, 
@@ -71,7 +71,7 @@ class BookingsController < ApiController
 		to_date = booking.to_date
 		RestClient.post('https://calm-oasis-56692.herokuapp.com/bookReject', 
 			{ 
-				bookerId: user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
+				bookerId: booking.guest.user.wallet.external_id, roomHash: room.hash_id, startDay: from_date.day,
 				startMonth: from_date.month, startYear: from_date.year, endDay: to_date.day, endMonth: to_date.month,
 				endYear: to_date.year
 			}.to_json, 
