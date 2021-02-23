@@ -5,6 +5,7 @@ class BookingsController < ApiController
 		booking = Booking.find(params[:booking_id])
 		accept_booking_in_payments_ws(booking) if should_connect_to_payments_server?
 		booking.accepted!
+		send_booking_accepted_push_notification booking
 		render_object booking.reload
 	end
 
@@ -16,7 +17,7 @@ class BookingsController < ApiController
 		booking = Booking.create!(guest: current_guest, room: room, 
 			from_date: from_date, to_date: to_date
 		)
-		send_push_notification booking
+		send_new_booking_push_notification booking
 		render_object booking
 	end
 
@@ -90,8 +91,7 @@ class BookingsController < ApiController
 		params[:filter_by]&.to_unsafe_h&.deep_symbolize_keys || {}
 	end
 
-	def send_push_notification(booking)
-		fcm_client = FCM.new("AAAAgIgUnn8:APA91bGu3L9vqrfv8CYdC_AZodVtJH0z4gBqAfThpBTedaH9FnX4Go3Www1EOYAktWS08iSx1-uKsxIcmNfPTkWsnQFKOJyGExSTNS9MTj3NCGe0n8jJsLvg3p5xzcPJ2MFTafNXvWm0")
+	def send_new_booking_push_notification(booking)
 		options = { 
 			priority: 'high',
 			collapse_key: 'new_booking',
@@ -103,5 +103,23 @@ class BookingsController < ApiController
 			}
 		}
 		fcm_client.send(booking.room.host.user.firebase_token, options)
+	end
+
+	def send_booking_accepted_push_notification(booking)
+		options = { 
+			priority: 'high',
+			collapse_key: 'booking_accepted',
+			data: { booking_id: booking.id },
+			notification: { 
+				body: 'Prepará las valijas, el anfitrión confirmó tu reserva!!',
+				title: 'Reserva confirmada',
+				sound: 'default'
+			}
+		}
+		fcm_client.send(booking.guest.user.firebase_token, options)
+	end
+
+	def fcm_client
+		FCM.new("AAAAgIgUnn8:APA91bGu3L9vqrfv8CYdC_AZodVtJH0z4gBqAfThpBTedaH9FnX4Go3Www1EOYAktWS08iSx1-uKsxIcmNfPTkWsnQFKOJyGExSTNS9MTj3NCGe0n8jJsLvg3p5xzcPJ2MFTafNXvWm0")
 	end
 end
