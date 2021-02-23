@@ -12,6 +12,7 @@ class UsersController < ApiController
 			Guest.create! user: user
 			create_wallet_for_user user
 		end
+		find_user.update! firebase_token: params[:firebase_token]
 		check_if_user_is_blocked find_user
 		render_object find_user
 	end

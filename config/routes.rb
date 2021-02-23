@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 	get 'health' => 'health#show'
 
-	resources :bookings, only: [] do
+	resources :bookings, only: [:show] do
 		post 'accept' => 'bookings#accept'
 		post 'mark_as_favorite' => 'bookings#mark_as_favorite'
 		post 'reject' => 'bookings#reject'

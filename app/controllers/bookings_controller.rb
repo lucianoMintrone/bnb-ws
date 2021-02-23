@@ -1,3 +1,5 @@
+require 'fcm'
+
 class BookingsController < ApiController
 	def accept
 		booking = Booking.find(params[:booking_id])
@@ -14,6 +16,7 @@ class BookingsController < ApiController
 		booking = Booking.create!(guest: current_guest, room: room, 
 			from_date: from_date, to_date: to_date
 		)
+		send_push_notification booking
 		render_object booking
 	end
 
@@ -35,6 +38,10 @@ class BookingsController < ApiController
 		reject_booking_in_payments_ws(booking) if should_connect_to_payments_server?
 		booking.rejected!
 		render_object booking.reload
+	end
+
+	def show
+		render_object Booking.find(params[:id]), { include: [ guest: :user, room: [ host: :user ] ] }
 	end
 
 	private
@@ -81,5 +88,20 @@ class BookingsController < ApiController
 
 	def filter_by
 		params[:filter_by]&.to_unsafe_h&.deep_symbolize_keys || {}
+	end
+
+	def send_push_notification(booking)
+		fcm_client = FCM.new("AAAAgIgUnn8:APA91bGu3L9vqrfv8CYdC_AZodVtJH0z4gBqAfThpBTedaH9FnX4Go3Www1EOYAktWS08iSx1-uKsxIcmNfPTkWsnQFKOJyGExSTNS9MTj3NCGe0n8jJsLvg3p5xzcPJ2MFTafNXvWm0")
+		options = { 
+			priority: 'high',
+			collapse_key: 'new_booking',
+			data: { booking_id: booking.id },
+			notification: { 
+				body: 'Entrá a la app para ver quién quiere reservar tu alojamiento!!',
+				title: 'Nueva reserva',
+				sound: 'default'
+			}
+		}
+		fcm_client.send(booking.room.host.user.firebase_token, options)
 	end
 end
