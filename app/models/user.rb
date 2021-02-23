@@ -9,6 +9,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  firebase_id :string           default(""), not null
+#  blocked_at  :datetime
 #
 class User < ApplicationRecord
 	include Rails.application.routes.url_helpers
