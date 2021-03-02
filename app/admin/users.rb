@@ -35,4 +35,18 @@ ActiveAdmin.register User do
 			item "Desbloquear", unblock_admin_user_path(user), method: :put, class: "member_link" if user.is_blocked?
 		end
 	end
+
+	show do |user|
+		attributes_table do
+			row :email
+			row :first_name
+			row :last_name
+			row :firebase_id
+			row :blocked_at
+			row :firebase_token
+			row :wallet do 
+				user.wallet.address
+			end
+		end
+	end
 end
