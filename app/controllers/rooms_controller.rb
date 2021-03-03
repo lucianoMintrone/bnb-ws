@@ -24,6 +24,12 @@ class RoomsController < ApiController
 		render_collection current_host.rooms
 	end
 
+	def show
+		room = Room.find(params[:id])
+		VisitedRoom.find_or_create_by(guest: current_guest, room: room) if user != room.host.user
+		render_object room
+	end
+
 	def update
 		room = Room.find(params[:id])
 		room.update! update_params

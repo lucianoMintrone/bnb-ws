@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_23_012721) do
+ActiveRecord::Schema.define(version: 2021_03_03_015859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,6 +131,16 @@ ActiveRecord::Schema.define(version: 2021_02_23_012721) do
     t.index ["firebase_id"], name: "index_users_on_firebase_id", unique: true
   end
 
+  create_table "visited_rooms", force: :cascade do |t|
+    t.bigint "guest_id", null: false
+    t.bigint "room_id", null: false
+    t.boolean "push_notification_has_been_sent", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guest_id"], name: "index_visited_rooms_on_guest_id"
+    t.index ["room_id"], name: "index_visited_rooms_on_room_id"
+  end
+
   create_table "wallets", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "external_id"
@@ -152,5 +162,7 @@ ActiveRecord::Schema.define(version: 2021_02_23_012721) do
   add_foreign_key "hosts", "users"
   add_foreign_key "rooms", "hosts"
   add_foreign_key "rooms", "room_types"
+  add_foreign_key "visited_rooms", "guests"
+  add_foreign_key "visited_rooms", "rooms"
   add_foreign_key "wallets", "users"
 end
