@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_015859) do
+ActiveRecord::Schema.define(version: 2021_03_04_223614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,15 @@ ActiveRecord::Schema.define(version: 2021_03_03_015859) do
     t.index ["user_id"], name: "index_hosts_on_user_id", unique: true
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.bigint "booking_id", null: false
+    t.integer "rate"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["booking_id"], name: "index_ratings_on_booking_id"
+  end
+
   create_table "room_types", force: :cascade do |t|
     t.string "name", null: false
     t.string "displayed_name", null: false
@@ -115,6 +124,8 @@ ActiveRecord::Schema.define(version: 2021_03_03_015859) do
     t.date "available_to"
     t.datetime "blocked_at"
     t.string "hash_id"
+    t.float "total_rating", default: 0.0
+    t.float "number_of_ratings", default: 0.0
     t.index ["host_id"], name: "index_rooms_on_host_id"
     t.index ["room_type_id"], name: "index_rooms_on_room_type_id"
   end
@@ -160,6 +171,7 @@ ActiveRecord::Schema.define(version: 2021_03_03_015859) do
   add_foreign_key "favorite_bookings", "guests"
   add_foreign_key "guests", "users"
   add_foreign_key "hosts", "users"
+  add_foreign_key "ratings", "bookings"
   add_foreign_key "rooms", "hosts"
   add_foreign_key "rooms", "room_types"
   add_foreign_key "visited_rooms", "guests"

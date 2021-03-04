@@ -2,7 +2,7 @@ class RoomSerializer < ActiveModel::Serializer
 	include Rails.application.routes.url_helpers
 
 	attributes :id, :name, :description, :number_of_guests, :price_per_night, :longitude, :latitude,
-		:available_from, :available_to
+		:available_from, :available_to, :average_rating
 
 	belongs_to :host
 	belongs_to :room_type
