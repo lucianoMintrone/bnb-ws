@@ -12,4 +12,6 @@ class Guest < ApplicationRecord
 	validates_uniqueness_of :user
 
 	belongs_to :user
+
+	has_many :visited_rooms
 end
