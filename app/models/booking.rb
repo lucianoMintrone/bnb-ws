@@ -27,7 +27,7 @@ class Booking < ApplicationRecord
 	belongs_to :guest
 	belongs_to :room
 
-	has_many :ratings
+	has_many :ratings, as: :rateable
 
 	enum status: { pending: 'pending', accepted: 'accepted', rejected: 'rejected' }
 end

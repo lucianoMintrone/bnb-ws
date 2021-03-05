@@ -4,8 +4,7 @@ Rails.application.routes.draw do
 	get 'health' => 'health#show'
 
 	resources :bookings, only: [:show] do
-		resources :ratings, only: [:create]
-
+		post 'ratings' => 'ratings#create_for_booking'
 		post 'accept' => 'bookings#accept'
 		post 'mark_as_favorite' => 'bookings#mark_as_favorite'
 		post 'reject' => 'bookings#reject'
@@ -13,6 +12,7 @@ Rails.application.routes.draw do
 
 	resources :guests, only: [] do
 		get 'bookings' => 'bookings#index_for_guest'
+		post 'ratings' => 'ratings#create_for_guest'
 	end
 
 	resources :hosts, only: [] do
