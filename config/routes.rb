@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 	end
 	get 'hosts/:host_id/rooms' => 'rooms#index_for_host'
 
+	post 'messages' => 'chats#send_message'
+
 	resources :rooms, only: [:index, :show, :update, :destroy] do
 		resources :bookings, only: [:create]
 		resources :comments, only: [:create]

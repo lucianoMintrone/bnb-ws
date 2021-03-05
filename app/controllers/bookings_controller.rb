@@ -119,6 +119,12 @@ class BookingsController < ApiController
 		fcm_client.send(booking.guest.user.firebase_token, options)
 	end
 
+
+
+	def send_chat_notification()
+
+	end
+
 	def fcm_client
 		FCM.new("AAAAgIgUnn8:APA91bGu3L9vqrfv8CYdC_AZodVtJH0z4gBqAfThpBTedaH9FnX4Go3Www1EOYAktWS08iSx1-uKsxIcmNfPTkWsnQFKOJyGExSTNS9MTj3NCGe0n8jJsLvg3p5xzcPJ2MFTafNXvWm0")
 	end
