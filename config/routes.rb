@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 	get 'health' => 'health#show'
 
 	resources :bookings, only: [:show] do
+		resources :ratings, only: [:create]
+
 		post 'accept' => 'bookings#accept'
 		post 'mark_as_favorite' => 'bookings#mark_as_favorite'
 		post 'reject' => 'bookings#reject'
