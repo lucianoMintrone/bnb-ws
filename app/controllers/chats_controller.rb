@@ -11,6 +11,7 @@ class ChatsController < ApiController
       receiver = booking.guest.user
     end
     send_chat_notification(user, booking.id, receiver)
+    render_successful_response("ok")
   end
 
   def send_chat_notification(user, booking_id, receiver)
