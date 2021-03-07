@@ -25,5 +25,11 @@ class BookingSerializer < ActiveModel::Serializer
 	attributes :id, :from_date, :to_date, :status
 
 	has_one :guest
+	has_one :rating
 	has_one :room
+	has_one :is_favorite
+
+	def is_favorite
+		object.favorite_bookings.exists?(guest_id: instance_options[:current_guest_id])
+	end
 end

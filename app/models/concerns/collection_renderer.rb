@@ -1,15 +1,11 @@
 class CollectionRenderer < Renderer
 	private
 	def object_serialization
-		@object.map { |object| object.serialize object_serialization_options }
+		@object.map { |object| object.serialize @options }
 	end
 
 	def should_include_pagination_data
 		@options[:paginated]
-	end
-
-	def object_serialization_options
-		@options.slice :include, :fields, :serializer
 	end
 
 	def pagination_data

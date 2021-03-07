@@ -4,6 +4,6 @@ class GuestId
 	end
 
 	def execute_for(relation)
-		FilterByAttributeQuery.new(:guest_id, @value).execute_for(relation)
+		relation.where(bookings: { guest_id: @value } )
 	end
 end
