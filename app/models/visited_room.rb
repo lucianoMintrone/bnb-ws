@@ -4,6 +4,7 @@
 #
 #  id                              :bigint           not null, primary key
 #  push_notification_has_been_sent :boolean          default(FALSE), not null
+#  similar_room_push_has_been_sent :boolean          default(FALSE), not null
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
 #  guest_id                        :bigint           not null

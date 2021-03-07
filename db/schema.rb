@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_05_011929) do
+ActiveRecord::Schema.define(version: 2021_03_06_153001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 2021_03_05_011929) do
     t.boolean "push_notification_has_been_sent", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "similar_room_push_has_been_sent", default: false, null: false
     t.index ["guest_id"], name: "index_visited_rooms_on_guest_id"
     t.index ["room_id"], name: "index_visited_rooms_on_room_id"
   end
