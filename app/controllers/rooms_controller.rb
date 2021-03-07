@@ -27,7 +27,7 @@ class RoomsController < ApiController
 	def show
 		room = Room.find(params[:id])
 		VisitedRoom.find_or_create_by(guest: current_guest, room: room) if user != room.host.user
-		render_object room
+		render_object room, { include: [:host, :room_type, [comments: :user], :images, :image_url]}
 	end
 
 	def update

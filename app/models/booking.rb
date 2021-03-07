@@ -27,7 +27,13 @@ class Booking < ApplicationRecord
 	belongs_to :guest
 	belongs_to :room
 
-	has_many :ratings, as: :rateable
+	has_one :rating, as: :rateable
+
+	has_many :favorite_bookings
 
 	enum status: { pending: 'pending', accepted: 'accepted', rejected: 'rejected' }
+
+	def host
+		room.host
+	end
 end

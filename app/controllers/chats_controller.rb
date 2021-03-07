@@ -11,7 +11,7 @@ class ChatsController < ApiController
       receiver = booking.guest.user
     end
     send_chat_notification(user, booking.id, receiver)
-    render_successful_response("ok")
+    render_successful_response({ response: { message: "ok" } })
   end
 
   def send_chat_notification(user, booking_id, receiver)
@@ -20,7 +20,7 @@ class ChatsController < ApiController
         collapse_key: 'chat_message',
         data: { booking_id: booking_id},
         notification: {
-            body: 'Tenes un nuevo mensaje de ' + user.first_name + " " + user.last_name,
+            body: "Tenes un nuevo mensaje de #{user.name}",
             title: 'Nuevo mensaje',
             sound: 'default'
         }
