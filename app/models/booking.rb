@@ -32,4 +32,8 @@ class Booking < ApplicationRecord
 	has_many :favorite_bookings
 
 	enum status: { pending: 'pending', accepted: 'accepted', rejected: 'rejected' }
+
+	def host
+		room.host
+	end
 end
