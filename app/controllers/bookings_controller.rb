@@ -22,11 +22,11 @@ class BookingsController < ApiController
 	end
 
 	def index_for_room
-		render_collection Booking.where(room_id: params[:room_id]), current_guest_id: 1
+		render_collection Booking.where(room_id: params[:room_id]), current_guest_id: current_guest.id
 	end
 
 	def index_for_guest
-		render_collection GetBookings.new(filter_by: filter_by, guest: user.guest).execute, current_guest_id: 1
+		render_collection GetBookings.new(filter_by: filter_by, guest: user.guest).execute, current_guest_id: current_guest.id
 	end
 
 	def mark_as_favorite

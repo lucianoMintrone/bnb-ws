@@ -17,7 +17,7 @@ class RoomsController < ApiController
 	end
 
 	def index
-		render_collection GetModels.new(repository: RoomRepository.new, filter_by: filter_by).execute
+		render_collection GetModels.new(repository: RoomRepository.new, filter_by: filter_by).execute, { include: [:host, :room_type, [comments: :user], :images, :image_url] }
 	end
 
 	def index_for_host
@@ -27,7 +27,7 @@ class RoomsController < ApiController
 	def show
 		room = Room.find(params[:id])
 		VisitedRoom.find_or_create_by(guest: current_guest, room: room) if user != room.host.user
-		render_object room, { include: [:host, :room_type, [comments: :user], :images, :image_url]}
+		render_object room, { include: [:host, :room_type, [comments: :user], :images, :image_url] }
 	end
 
 	def update
